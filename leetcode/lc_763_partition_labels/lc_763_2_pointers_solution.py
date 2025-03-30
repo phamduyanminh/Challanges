@@ -18,7 +18,7 @@ class Solution:
             # it means we've included all characters that appear in this partition
             if index == end:
                 result.append(end+1-start)
-                start = index+1
+                start = end+1
 
         return result
             
