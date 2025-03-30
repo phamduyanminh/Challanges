@@ -2,30 +2,24 @@ class Solution:
     def partitionLabels(self, s: str) -> List[int]:
         result = []
 
-        # 'start' contains the beginning index of the current partition
+        # Use a dictionary to store the last index place for every letter
+        hashmap = {}
+        for index, char in enumerate(s):
+            hashmap[char] = index
+        
         start = 0
+        end = 0
         
-        # Iterating through entire string
-        while start < len(s):
-            # 'end' is set to the last occurrence of the first character of the current partition
-            end = s.rfind(s[start])
-            # 'currentIndex' is used to scan through characters in the current partition
-            currentIndex = start
+        for index, char in enumerate(s):
+            # Update 'end' with the furthest last index for current letter in the current partition
+            end = max(end, hashmap[char])
 
-            # Move through the current partition to ensure every character's last occurrence is included
-            while currentIndex < end:
-                # For each character, update 'end' if its last occurrence is further to the right
-                end = max(end, s.rfind(s[currentIndex]))
-                 # Move to the next character in the current partition
-                currentIndex += 1
-            
-            # When currentIndex reaches end, we have a complete partition
-            # The size of the partition is calculated as (end - start + 1)
-            result.append(end+1-start)
+            # When the current index matches the current partition end,
+            # it means we've included all characters that appear in this partition
+            if index == end:
+                result.append(end+1-start)
+                start = index+1
 
-            # Move 'start' to the beginning of the next partition
-            start = end+1
-        
         return result
             
 
